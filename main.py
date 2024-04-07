@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 
 # Load the model
-model = pickle.load(open('water_quality_model1.sav', 'rb'))
+model = pickle.load(open('water_quality_model1.pkl', 'rb'))
 
 # Define a function to make predictions
 def predict_water_quality(features):
