@@ -3,11 +3,12 @@ import streamlit as st
 import numpy as np
 
 # Load the pickled model
-@st.cache
+@st.cache_data
 def load_model():
     try:
         with open('water_quality_model1.pkl', 'rb') as file:
             model = pickle.load(file)
+        st.success("Model loaded successfully.")  # Debugging statement
         return model
     except FileNotFoundError:
         st.error("Error: Model file not found.")
