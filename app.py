@@ -12,8 +12,7 @@ def load_model():
         return model
     except FileNotFoundError:
         st.error("Error: Model file not found.")
-    except Exception as e:
-        st.error("Error loading the model: {}".format(e))
+   
 
 model = load_model()
 
