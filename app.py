@@ -2,7 +2,7 @@ import pickle
 import streamlit as st
 import numpy as np
 
-model = None  # Initialize the model variable outside the try block
+
 
 try:
     # Load the pickled model
