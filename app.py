@@ -6,7 +6,7 @@ model = None  # Initialize the model variable outside the try block
 
 try:
     # Load the pickled model
-    with open('water_quality_model1.pkl', 'rb') as file:
+    with open('water_quality_model1.sav', 'rb') as file:
         model = pickle.load(file)
 except FileNotFoundError:
     print("Error: Model file not found.")
