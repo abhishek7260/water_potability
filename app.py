@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 
 # Load the pickled model
-@st.cache_data
+@st.cache_resource
 def load_model():
     try:
         with open('water_quality_model1.pkl', 'rb') as file:
