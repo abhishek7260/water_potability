@@ -2,8 +2,6 @@ import pickle
 import streamlit as st
 import numpy as np
 
-import pickle
-
 try:
     # Load the pickled model
     with open('water_quality_model1.pkl', 'rb') as file:
