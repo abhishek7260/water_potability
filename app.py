@@ -1,21 +1,28 @@
 import pickle
 import streamlit as st
 import numpy as np
-try:
-    # Load the pickled model
-    with open('water_quality_model1.pkl', 'rb') as file:
-        model = pickle.load(file)
-except FileNotFoundError:
-    print("Error: Model file not found.")
-except Exception as e:
-    print("Error loading the model:", e)
-    # Handle other exceptions as needed
 
+# Load the pickled model
+@st.cache
+def load_model():
+    try:
+        with open('water_quality_model1.pkl', 'rb') as file:
+            model = pickle.load(file)
+        return model
+    except FileNotFoundError:
+        st.error("Error: Model file not found.")
+    except Exception as e:
+        st.error("Error loading the model: {}".format(e))
+
+model = load_model()
 
 # Define a function to make predictions
 def predict_water_quality(features):
-    prediction = model.predict(features.reshape(1, -1))
-    return prediction[0]
+    try:
+        prediction = model.predict(features.reshape(1, -1))
+        return prediction[0]
+    except Exception as e:
+        st.error("Error predicting water quality: {}".format(e))
 
 # Set up the Streamlit app
 st.title('Water Potability Prediction using ML')
@@ -50,22 +57,27 @@ with col8:
 with col9:
     Turbidity = st.text_input('Turbidity Value')
 
-# Default value for price_prediction
+# Default value for quality_prediction
 quality_prediction = ''
 
 # Prediction button
 if st.button('Predict'):
-    # Create a feature vector from user input
-    features = np.array([pH, Hardness, Solids, Chloramines, Sulfate, Conductivity, Organic_carbon, Trihalomethanes, Turbidity], dtype=float)
-    
-    # Make prediction
-    prediction = predict_water_quality(features)
-    
-    # Display prediction result
-    if prediction == 1:
-        quality_prediction = 'The water is safe to drink.'
-    else:
-        quality_prediction = 'The water is not safe to drink.'
+    try:
+        # Validate inputs and convert to float
+        features = np.array([float(pH), float(Hardness), float(Solids), float(Chloramines),
+                             float(Sulfate), float(Conductivity), float(Organic_carbon),
+                             float(Trihalomethanes), float(Turbidity)])
+
+        # Make prediction
+        prediction = predict_water_quality(features)
+
+        # Display prediction result
+        if prediction == 1:
+            quality_prediction = 'The water is safe to drink.'
+        else:
+            quality_prediction = 'The water is not safe to drink.'
+    except ValueError:
+        st.error("Error: Please enter valid numeric values.")
 
 # Display the prediction result
 st.success(quality_prediction)
