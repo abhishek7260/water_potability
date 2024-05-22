@@ -2,17 +2,15 @@ import pickle
 import streamlit as st
 import numpy as np
 
-
-
+# Load the pickled model
+model = None
 try:
-    # Load the pickled model
     with open('water_quality_model1.sav', 'rb') as file:
         model = pickle.load(file)
 except FileNotFoundError:
-    print("Error: Model file not found.")
+    st.error("Error: Model file not found.")
 except Exception as e:
-    print("Error loading the model:", e)
-    # Handle other exceptions as needed
+    st.error(f"Error loading the model: {e}")
 
 if model is not None:
     # Define a function to make predictions
